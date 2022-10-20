@@ -1,61 +1,56 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <memory>
 #include <vector>
 
-#include "window.h"
 #include "entity.h"
+#include "window.h"
+#include "resources.h"
 
+void init_libraries() {
+    if (SDL_Init(SDL_INIT_VIDEO) > 0)
+        std::cout << "HEY.. SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
 
-int main(int argc, char* args[])
-{
-	if (SDL_Init(SDL_INIT_VIDEO) > 0)
-		std::cout << "HEY.. SDL_Init HAS FAILED. SDL_ERROR: " << SDL_GetError() << std::endl;
+    if (!(IMG_Init(IMG_INIT_PNG)))
+        std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
+}
 
-	if (!(IMG_Init(IMG_INIT_PNG)))
-		std::cout << "IMG_init has failed. Error: " << SDL_GetError() << std::endl;
-
-	Window window("GAME v1.0", 1280, 720);
-
-	SDL_Texture* grassTexture = window.loadTexture("res/gfx/ground_grass_1.png");
-
-    std::vector<Entity> entitiees = {Entity(Vector2f(0, 0), grassTexture),
-                         			 Entity(Vector2f(30, 0), grassTexture),
-                          			 Entity(Vector2f(30, 30), grassTexture),
-                          			 Entity(Vector2f(30, 60), grassTexture)};
+int main(int argc, char *args[]) {
+    Window window("GAME v1.0", 1280, 720);
     
-	Entity wilson(Vector2f(100, 50), grassTexture);
+    //todo: make singleton
+    Resources* resources = new Resources(&window);
 
-	entitiees.push_back(wilson);
+    std::vector<std::shared_ptr<Entity>> entities = {
+        std::make_shared<Entity>(Vector2f(0, 0), resources->getGrassTexture()),
+        std::make_shared<Entity>(Vector2f(30, 0), resources->getGrassTexture()),
+        std::make_shared<Entity>(Vector2f(30, 30), resources->getGrassTexture()),
+        std::make_shared<Entity>(Vector2f(30, 60), resources->getGrassTexture()),
+    };
 
-	bool gameRunning = true;
+    bool gameRunning = true;
 
-	SDL_Event event;
+    SDL_Event event;
 
-	while (gameRunning)
-	{
-		// Get our controls and events
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-				gameRunning = false;
-		}
+    while (gameRunning) {
+        // Get our controls and events
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT)
+                gameRunning = false;
+        }
 
-		window.clear();
-		
+        window.clear();
 
-		for (Entity& e : entitiees)
-		{ 
-			window.render(e);
-		}
+        for (auto &e : entities) {
+            window.render(e.get());
+        }
 
+        window.display();
+    }
 
-		window.display();
+    window.cleanup();
+    SDL_Quit();
 
-	}
-
-	window.cleanUp();
-	SDL_Quit();
-
-	return 0;
+    return 0;
 }

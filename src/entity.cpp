@@ -9,6 +9,10 @@ Entity::Entity(Vector2f p_position, SDL_Texture *p_texture) : position(p_positio
     SDL_QueryTexture(p_texture, NULL, NULL, &currentFrame.w, &currentFrame.h);
 }
 
+Entity::~Entity() {
+	SDL_DestroyTexture(texture);
+}
+
 Vector2f Entity::getPosition() {
     return position;
 }

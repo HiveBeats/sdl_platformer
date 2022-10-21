@@ -7,12 +7,18 @@
 #include <iostream>
 
 class Player : public Character {
+   private:
+    int animation_counter_ = 0;
+    void MoveInDirection();
+    void ChooseDirectionFromEvent(SDL_Event* e);
+
    protected:
     void LoadDefaultFrame() override;
+    void Animate() override;
 
    public:
     Player(Vector2f p_position, SDL_Texture* p_texture)
         : Character(p_position, Resources::Instance().get_character_texture()) {
     }
-    void Animate() override;
+    void Update(SDL_Event* e) override;
 };

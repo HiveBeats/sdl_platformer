@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <cmath>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -28,20 +29,21 @@ void init_libraries() {
 
 void init_entities(std::vector<std::shared_ptr<Object>>* list) {
     Resources& resources = Resources::Instance();
-    SDL_Texture* grassTexture = resources.get_grass_texture();
+    SDL_Texture* grass_texture = resources.get_grass_texture();
     int w, h;
-    SDL_QueryTexture(grassTexture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(grass_texture, NULL, NULL, &w, &h);
 
-    int count = w_width / w;
-    int low = w_height - (2 * h);
+    // x4 because on render it's transformed to x4
+    int count = floor(static_cast<double>(w_width) / (w * 4));
+    int ground_offset = h * 4 + (h / 2) + (h / 4);
 
-    for (int i = 0; i < count / 3; i++) {
-        Vector2f grass_position = Vector2f(i * h, low / 4);
+    for (int i = 0; i < count; i++) {
+        Vector2f grass_position = Vector2f(i * w, ground_offset);
         auto grass_field = CreateObject<Grass>(grass_position, NULL);
         list->push_back(grass_field);
     }
 
-    Vector2f player_position = Vector2f((count / 3 / 2) * h, low / 6 + 10);
+    Vector2f player_position = Vector2f(2 * w, ground_offset - (h + (h / 4)));
     auto player = CreateObject<Player>(player_position, NULL);
     list->push_back(player);
 }

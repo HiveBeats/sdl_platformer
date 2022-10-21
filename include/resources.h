@@ -8,9 +8,25 @@ class Resources {
     Window* window_;
     SDL_Texture* grass_texture_;
     SDL_Texture* character_texture_;
+    Resources() {}
 
    public:
-    explicit Resources(Window* window);
-    SDL_Texture* getGrassTexture() const { return grass_texture_; }
-    SDL_Texture* getCharacterTexture() const { return character_texture_; }
+    static Resources& Create(Window* window) {
+        static Resources INSTANCE;
+        if (window != NULL) {
+            INSTANCE.window_ = window;
+            INSTANCE.grass_texture_ =
+                window->LoadTexture("res/gfx/ground_grass_1.png");
+            INSTANCE.character_texture_ =
+                window->LoadTexture("res/gfx/hulking_knight.png");
+        }
+
+        return INSTANCE;
+    }
+    static Resources& Instance() { return Create(NULL); }
+    Resources(Resources const&) = delete;
+    void operator=(Resources const&) = delete;
+
+    SDL_Texture* get_grass_texture() const { return grass_texture_; }
+    SDL_Texture* get_character_texture() const { return character_texture_; }
 };

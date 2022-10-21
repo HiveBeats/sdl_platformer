@@ -25,9 +25,9 @@ void init_libraries() {
                   << std::endl;
 }
 
-void init_entities(std::vector<std::shared_ptr<Object>>* list,
-                   Resources* resources) {
-    SDL_Texture* grassTexture = resources->getGrassTexture();
+void init_entities(std::vector<std::shared_ptr<Object>>* list) {
+    Resources& resources = Resources::Instance();
+    SDL_Texture* grassTexture = resources.get_grass_texture();
     int w, h;
     SDL_QueryTexture(grassTexture, NULL, NULL, &w, &h);
 
@@ -36,25 +36,25 @@ void init_entities(std::vector<std::shared_ptr<Object>>* list,
 
     for (int i = 0; i < count / 3; i++) {
         auto grass_field = CreateObject<Object>(Vector2f(i * h, low / 4),
-                                                resources->getGrassTexture());
+                                                resources.get_grass_texture());
         list->push_back(grass_field);
     }
 
     auto player =
         CreateObject<Player>(Vector2f((count / 3 / 2) * h, low / 6 + 10),
-                             resources->getCharacterTexture());
+                             resources.get_character_texture());
     list->push_back(player);
 }
 
 int main(int argc, char* args[]) {
+    init_libraries();
     Window window("GAME v1.0", WINDOW_X, WINDOW_Y);
     window.QuerySize(&w_width, &w_height);
 
-    // todo: make singleton
-    Resources* resources = new Resources(&window);
+    Resources& resources = Resources::Create(&window);
 
     std::vector<std::shared_ptr<Object>> entities = {};
-    init_entities(&entities, resources);
+    init_entities(&entities);
 
     bool gameRunning = true;
     bool left = true;

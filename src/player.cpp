@@ -10,7 +10,6 @@ void Player::Animate() {
 }
 
 void Player::LoadDefaultFrame() {
-    std::cout << "player frame setter called" << position_.x << std::endl;
     current_frame_.x = 0;
     current_frame_.y = 0;
     current_frame_.h = 64;

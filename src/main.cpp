@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "object-factory.h"
 #include "object.h"
 #include "player.h"
 #include "resources.h"
@@ -34,12 +35,15 @@ void init_entities(std::vector<std::shared_ptr<Object>>* list,
     int low = w_height - (2 * h);
 
     for (int i = 0; i < count / 3; i++) {
-        list->push_back(std::make_shared<Object>(Vector2f(i * h, low / 4),
-                                                 resources->getGrassTexture()));
+        auto grass_field = CreateObject<Object>(Vector2f(i * h, low / 4),
+                                                resources->getGrassTexture());
+        list->push_back(grass_field);
     }
-    list->push_back(
-        std::make_shared<Player>(Vector2f((count / 3 / 2) * h, low / 6 + 10),
-                                 resources->getCharacterTexture()));
+
+    auto player =
+        CreateObject<Player>(Vector2f((count / 3 / 2) * h, low / 6 + 10),
+                             resources->getCharacterTexture());
+    list->push_back(player);
 }
 
 int main(int argc, char* args[]) {

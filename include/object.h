@@ -9,20 +9,15 @@ class Object {
     Vector2f position_;
     SDL_Rect current_frame_;
     SDL_Texture* texture_;
-    virtual void LoadDefaultFrame() {
-        current_frame_.x = 0;
-        current_frame_.y = 0;
-        // set frame width and height by it's texture size;
-        SDL_QueryTexture(texture_, NULL, NULL, &current_frame_.w,
-                         &current_frame_.h);
-    }
+    virtual void LoadDefaultFrame();
 
    public:
-    Object(Vector2f position, SDL_Texture* texture);
+    Object(Vector2f position, SDL_Texture* texture)
+        : position_(position), texture_(texture) {}
     ~Object();
-
+    virtual void Init();
     Vector2f get_position() const { return position_; }
-    void set_position(Vector2f position) {position_ = position; }
+    void set_position(Vector2f position) { position_ = position; }
     float getX();
     float getY();
     void setX(float x);

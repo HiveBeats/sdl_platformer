@@ -2,23 +2,21 @@
 #include <SDL2/SDL_image.h>
 #include "object.h"
 
-Object::Object(Vector2f position, SDL_Texture* texture)
-    : position_(position), texture_(texture) {
+void Object::LoadDefaultFrame() {
+    current_frame_.x = 0;
+    current_frame_.y = 0;
+    // set frame width and height by it's texture size;
+    SDL_QueryTexture(texture_, NULL, NULL, &current_frame_.w,
+                     &current_frame_.h);
+}
+
+void Object::Init() {
     LoadDefaultFrame();
 }
-/*
-void Object::setDefaultFrame() {
-    currentFrame.x = 0;
-    currentFrame.y = 0;
-    // set frame width and height by it's texture size;
-    SDL_QueryTexture(texture, NULL, NULL, &currentFrame.w, &currentFrame.h);
-}
-*/
 
 Object::~Object() {
     SDL_DestroyTexture(texture_);
 }
-
 
 float Object::getX() {
     return position_.x;

@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "grass.h"
 #include "object-factory.h"
 #include "object.h"
 #include "player.h"
@@ -35,14 +36,13 @@ void init_entities(std::vector<std::shared_ptr<Object>>* list) {
     int low = w_height - (2 * h);
 
     for (int i = 0; i < count / 3; i++) {
-        auto grass_field = CreateObject<Object>(Vector2f(i * h, low / 4),
-                                                resources.get_grass_texture());
+        Vector2f grass_position = Vector2f(i * h, low / 4);
+        auto grass_field = CreateObject<Grass>(grass_position, NULL);
         list->push_back(grass_field);
     }
 
-    auto player =
-        CreateObject<Player>(Vector2f((count / 3 / 2) * h, low / 6 + 10),
-                             resources.get_character_texture());
+    Vector2f player_position = Vector2f((count / 3 / 2) * h, low / 6 + 10);
+    auto player = CreateObject<Player>(player_position, NULL);
     list->push_back(player);
 }
 

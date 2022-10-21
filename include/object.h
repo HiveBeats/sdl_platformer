@@ -14,7 +14,7 @@ class Object {
    public:
     Object(Vector2f position, SDL_Texture* texture)
         : position_(position), texture_(texture) {}
-    ~Object();
+    virtual ~Object();
     virtual void Init();
     Vector2f get_position() const { return position_; }
     void set_position(Vector2f position) { position_ = position; }

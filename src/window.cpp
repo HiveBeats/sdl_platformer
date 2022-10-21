@@ -14,9 +14,8 @@ void fill_rect(SDL_Rect* rect, int x, int y, int h, int w) {
 
 Window::Window(const char* title, int w, int h)
     : window_(NULL), renderer_(NULL) {
-    window_ =
-        SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
-                         SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
+    window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
+                               SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
 
     if (window_ == NULL) {
         std::cout << "Window failed to init. Error: " << SDL_GetError()
@@ -38,7 +37,7 @@ SDL_Texture* Window::LoadTexture(const char* filePath) {
 }
 
 void Window::QuerySize(int* w, int* h) {
-    SDL_GetRendererOutputSize(renderer_, w, h);
+    SDL_GetWindowSize(window_, w, h);
 }
 
 void Window::Cleanup() {
@@ -57,8 +56,8 @@ void Window::Render(Object* object) {
               currentFrame.w);
 
     SDL_Rect dst;
-    fill_rect(&dst, object->getX() * 4, object->getY() * 4,
-              currentFrame.h * 4, currentFrame.w * 4);
+    fill_rect(&dst, object->getX() * 4, object->getY() * 4, currentFrame.h * 4,
+              currentFrame.w * 4);
 
     SDL_RenderCopy(renderer_, object->get_texture(), &src, &dst);
 }

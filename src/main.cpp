@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "direction.h"
 #include "grass.h"
 #include "object-factory.h"
 #include "object.h"
@@ -59,16 +60,41 @@ int main(int argc, char* args[]) {
     init_entities(&entities);
 
     bool gameRunning = true;
-    bool left = true;
+    Direction direction = Direction::Stale;
     int count = 0;
     SDL_Event event;
 
     while (gameRunning) {
+        Object* player = entities.back().get();
+
         // Get our controls and events
+        // game_manager->update(event); //with it's internal state
+        //   level_manager->update(event); //with it's internal state
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT: {
                     gameRunning = false;
+                    break;
+                }
+                case SDL_KEYDOWN: {
+                    switch (event.key.keysym.sym) {
+                        case SDLK_LEFT:
+                            direction = Direction::Left;
+                            break;
+                        case SDLK_RIGHT:
+                            direction = Direction::Right;
+                            break;
+                        case SDLK_ESCAPE:
+                            gameRunning = false;
+                            break;
+                        default:
+                            direction = Direction::Stale;
+                            break;
+                    }
+                    break;
+                }
+                case SDL_KEYUP: {
+                    direction = Direction::Stale;
                     break;
                 }
             }
@@ -76,17 +102,13 @@ int main(int argc, char* args[]) {
 
         window.Clear();
 
-        Object* player = entities.back().get();
-        if (left && player->getX() > 0) {
+        // player.update(event);
+        if (direction == Direction::Left && player->getX() > 0) {
             player->setX(player->getX() - 1);
-        } else if (player->getX() == 0) {
-            left = false;
+        } else if (direction == Direction::Right &&
+                   player->getX() < w_width - (16 * player->getWidth())) {
             player->setX(player->getX() + 1);
-        } else if (!left && player->getX() < 192) {
-            player->setX(player->getX() + 1);
-        } else if (player->getX() == 192) {
-            left = true;
-            player->setX(player->getX() - 1);
+        } else if (direction == Direction::Stale) {
         }
 
         if (++count == 10) {

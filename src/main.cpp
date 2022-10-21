@@ -54,26 +54,26 @@ int main(int argc, char* args[]) {
     Window window("GAME v1.0", WINDOW_X, WINDOW_Y);
     window.QuerySize(&w_width, &w_height);
 
-    Resources& resources = Resources::Create(&window);
+    Resources::Create(&window);
 
     std::vector<std::shared_ptr<Object>> entities = {};
     init_entities(&entities);
 
-    bool gameRunning = true;
+    bool game_running = true;
     Direction direction = Direction::Stale;
     int count = 0;
     SDL_Event event;
 
-    while (gameRunning) {
+    while (game_running) {
         Object* player = entities.back().get();
 
         // Get our controls and events
-        // game_manager->update(event); //with it's internal state
-        //   level_manager->update(event); //with it's internal state
+        // game_manager.update(event); //with it's internal state
+        //   level_manager.update(event); //with it's internal state
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT: {
-                    gameRunning = false;
+                    game_running = false;
                     break;
                 }
                 case SDL_KEYDOWN: {
@@ -85,7 +85,7 @@ int main(int argc, char* args[]) {
                             direction = Direction::Right;
                             break;
                         case SDLK_ESCAPE:
-                            gameRunning = false;
+                            game_running = false;
                             break;
                         default:
                             direction = Direction::Stale;

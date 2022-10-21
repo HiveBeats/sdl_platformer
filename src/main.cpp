@@ -5,11 +5,14 @@
 #include <vector>
 
 #include "entity.h"
+#include "player.h"
 #include "window.h"
 #include "resources.h"
 
 #define WINDOW_X 1280
 #define WINDOW_Y 720
+
+int w_width, w_height;
 
 void init_libraries() {
     if (SDL_Init(SDL_INIT_VIDEO) > 0)
@@ -24,18 +27,19 @@ void init_ground(std::vector<std::shared_ptr<Entity>> *list, Resources* resource
     int w, h;
     SDL_QueryTexture(grassTexture, NULL, NULL, &w, &h);
     
-    int count = WINDOW_X / h;
-    int low = WINDOW_Y - (2 * w);
-    std::cout << "w: " << w  << " h: " << h << " count: " << count << " low: " << low << std::endl;
+    int count = w_width / w;
+    int low = w_height - (2 * h);
     
     for (int i = 0; i < count/3; i++) {
         list->push_back(std::make_shared<Entity>(Vector2f(i * h, low/4), resources->getGrassTexture()));
     }
+    list->push_back(std::make_shared<Player>(Vector2f((count/3/2) * h, low/6 + 10), resources->getCharacterTexture()));
 }
 
 int main(int argc, char *args[]) {
     Window window("GAME v1.0", WINDOW_X, WINDOW_Y);
-    
+    window.query_size(&w_width, &w_height);
+
     //todo: make singleton
     Resources* resources = new Resources(&window);
 
@@ -43,7 +47,8 @@ int main(int argc, char *args[]) {
     init_ground(&entities, resources);
 
     bool gameRunning = true;
-
+    bool left = true;
+    int count = 0;
     SDL_Event event;
 
     while (gameRunning) {
@@ -55,11 +60,34 @@ int main(int argc, char *args[]) {
 
         window.clear();
 
+        Entity* player = entities.back().get();
+        if (left && player->getX() > 0) {
+            player->setX(player->getX() - 1);
+        }
+        else if (player->getX() == 0) {
+            left = false;
+            player->setX(player->getX() + 1);
+        }
+        else if (!left && player->getX() < 192) {
+            player->setX(player->getX() + 1);
+        }
+        else if (player->getX() == 192) {
+            left = true;
+            player->setX(player->getX() - 1);
+        }
+
+        if (++count == 10) {
+            dynamic_cast<Player*>(player)->animate();
+            count = 0;
+        }
+
+
         for (auto &e : entities) {
             window.render(e.get());
         }
 
         window.display();
+        SDL_Delay(16);
     }
 
     window.cleanup();

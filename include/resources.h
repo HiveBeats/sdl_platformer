@@ -7,8 +7,10 @@ class Resources {
 private:
     Window* window;
     SDL_Texture *grassTexture;
+    SDL_Texture *characterTexture;
 
 public:
     Resources(Window *window);
     SDL_Texture *getGrassTexture();
+    SDL_Texture *getCharacterTexture();
 };

@@ -33,6 +33,10 @@ SDL_Texture *Window::load_texture(const char *p_filePath) {
     return texture;
 }
 
+void Window::query_size(int* w, int*h) {
+    SDL_GetRendererOutputSize(renderer, w, h);
+}
+
 void Window::cleanup() {
     SDL_DestroyWindow(window);
 }

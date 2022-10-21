@@ -1,12 +1,13 @@
-#include "entity.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "object.h"
 
-Entity::Entity(Vector2f p_position, SDL_Texture *p_texture) : position(p_position), texture(p_texture) {
+Object::Object(Vector2f p_position, SDL_Texture* p_texture)
+    : position(p_position), texture(p_texture) {
     setDefaultFrame();
 }
 /*
-void Entity::setDefaultFrame() {
+void Object::setDefaultFrame() {
     currentFrame.x = 0;
     currentFrame.y = 0;
     // set frame width and height by it's texture size;
@@ -14,46 +15,46 @@ void Entity::setDefaultFrame() {
 }
 */
 
-Entity::~Entity() {
-	SDL_DestroyTexture(texture);
+Object::~Object() {
+    SDL_DestroyTexture(texture);
 }
 
-Vector2f Entity::getPosition() {
+Vector2f Object::getPosition() {
     return position;
 }
 
-float Entity::getX() {
+float Object::getX() {
     return position.x;
 }
 
-float Entity::getY() {
+float Object::getY() {
     return position.y;
 }
 
-void Entity::setPosition(Vector2f p_position) {
+void Object::setPosition(Vector2f p_position) {
     position = p_position;
 }
 
-void Entity::setX(float p_x) {
+void Object::setX(float p_x) {
     position.x = p_x;
 }
 
-void Entity::setY(float p_y) {
+void Object::setY(float p_y) {
     position.y = p_y;
 }
 
-int Entity::getWidth() {
+int Object::getWidth() {
     return currentFrame.w;
 }
 
-int Entity::getHeight() {
+int Object::getHeight() {
     return currentFrame.h;
 }
 
-SDL_Texture *Entity::getTexture() {
+SDL_Texture* Object::getTexture() {
     return texture;
 }
 
-SDL_Rect Entity::getCurrentFrame() {
+SDL_Rect Object::getCurrentFrame() {
     return currentFrame;
 }

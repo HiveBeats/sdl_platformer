@@ -4,11 +4,11 @@
 
 #include <vector2.h>
 
-class Entity {
-protected:
+class Object {
+   protected:
     Vector2f position;
     SDL_Rect currentFrame;
-    SDL_Texture *texture;
+    SDL_Texture* texture;
     virtual void setDefaultFrame() {
         currentFrame.x = 0;
         currentFrame.y = 0;
@@ -16,9 +16,9 @@ protected:
         SDL_QueryTexture(texture, NULL, NULL, &currentFrame.w, &currentFrame.h);
     };
 
-public:
-    Entity(Vector2f p_position, SDL_Texture *p_texture);
-    ~Entity();
+   public:
+    Object(Vector2f p_position, SDL_Texture* p_texture);
+    ~Object();
 
     Vector2f getPosition();
     float getX();
@@ -30,8 +30,8 @@ public:
     int getWidth();
     int getHeight();
 
-    SDL_Texture *getTexture();
-    void setTexture(SDL_Texture *p_texture);
+    SDL_Texture* getTexture();
+    void setTexture(SDL_Texture* p_texture);
 
     SDL_Rect getCurrentFrame();
 };

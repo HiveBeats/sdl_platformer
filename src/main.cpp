@@ -2,7 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
-#include "level-manager.h"
+#include "game-manager.h"
 #include "resources.h"
 #include "window.h"
 
@@ -10,6 +10,7 @@
 #define WINDOW_Y 480
 
 int g_width, g_height;
+bool g_game_running;
 
 void init_libraries() {
     if (SDL_Init(SDL_INIT_VIDEO) > 0)
@@ -27,46 +28,15 @@ int main(int argc, char* args[]) {
     window.QuerySize(&g_width, &g_height);
 
     Resources::Create(&window);
-    LevelManager* level_manager = new LevelManager();
+    GameManager* game_manager = new GameManager(&window);
 
-    bool game_running = true;
-    SDL_Event event;
+    g_game_running = true;
 
-    while (game_running) {
-        // Get our controls and events
-        // game_manager.update(event); //with it's internal state
-        //   level_manager.update(event); //with it's internal state
-
-        // todo: while (SDL_PollEvent) to apply all events from the event queue
-        // and then transform into array of actions to be applied
-        SDL_PollEvent(&event);
-        switch (event.type) {
-            case SDL_QUIT: {
-                game_running = false;
-                break;
-            }
-            case SDL_KEYDOWN: {
-                switch (event.key.keysym.sym) {
-                    case SDLK_ESCAPE:
-                        game_running = false;
-                        break;
-                }
-                break;
-            }
-        }
-        level_manager->Update(&event);
-
-        window.Clear();
-
-        for (auto& obj : level_manager->get_objects()) {
-            window.Render(obj.get());
-        }
-
-        window.Display();
-        SDL_Delay(16);
+    while (g_game_running) {
+        game_manager->Update();
     }
 
-    delete level_manager;
+    delete game_manager;
 
     window.Cleanup();
     SDL_Quit();

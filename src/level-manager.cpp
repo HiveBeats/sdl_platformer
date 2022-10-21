@@ -1,6 +1,7 @@
 #include "grass.h"
 #include "level-manager.h"
 #include "object-factory.h"
+
 LevelManager::LevelManager() {
     objects_ = new std::vector<std::shared_ptr<Object>>();
 

@@ -7,19 +7,19 @@
 
 class Player : public Object {
    protected:
-    void setDefaultFrame() override {
-        std::cout << "player frame setter called" << position.x << std::endl;
-        currentFrame.x = 0;
-        currentFrame.y = 0;
-        currentFrame.h = 64;
-        currentFrame.w = 64;
+    void LoadDefaultFrame() override {
+        std::cout << "player frame setter called" << position_.x << std::endl;
+        current_frame_.x = 0;
+        current_frame_.y = 0;
+        current_frame_.h = 64;
+        current_frame_.w = 64;
     }
 
    public:
     Player(Vector2f p_position, SDL_Texture* p_texture)
         : Object(p_position, p_texture) {
-        //why not called from base?
-        setDefaultFrame();
+        // why not called from base?
+        LoadDefaultFrame();
     }
-    void animate();
+    void Animate();
 };

@@ -44,9 +44,9 @@ void init_entities(std::vector<std::shared_ptr<Object>>* list,
 
 int main(int argc, char* args[]) {
     Window window("GAME v1.0", WINDOW_X, WINDOW_Y);
-    window.query_size(&w_width, &w_height);
+    window.QuerySize(&w_width, &w_height);
 
-    //todo: make singleton
+    // todo: make singleton
     Resources* resources = new Resources(&window);
 
     std::vector<std::shared_ptr<Object>> entities = {};
@@ -68,7 +68,7 @@ int main(int argc, char* args[]) {
             }
         }
 
-        window.clear();
+        window.Clear();
 
         Object* player = entities.back().get();
         if (left && player->getX() > 0) {
@@ -84,19 +84,19 @@ int main(int argc, char* args[]) {
         }
 
         if (++count == 10) {
-            dynamic_cast<Player*>(player)->animate();
+            dynamic_cast<Player*>(player)->Animate();
             count = 0;
         }
 
         for (auto& e : entities) {
-            window.render(e.get());
+            window.Render(e.get());
         }
 
-        window.display();
+        window.Display();
         SDL_Delay(16);
     }
 
-    window.cleanup();
+    window.Cleanup();
     SDL_Quit();
 
     return 0;

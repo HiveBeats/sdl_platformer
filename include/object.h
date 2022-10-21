@@ -6,32 +6,33 @@
 
 class Object {
    protected:
-    Vector2f position;
-    SDL_Rect currentFrame;
-    SDL_Texture* texture;
-    virtual void setDefaultFrame() {
-        currentFrame.x = 0;
-        currentFrame.y = 0;
+    Vector2f position_;
+    SDL_Rect current_frame_;
+    SDL_Texture* texture_;
+    virtual void LoadDefaultFrame() {
+        current_frame_.x = 0;
+        current_frame_.y = 0;
         // set frame width and height by it's texture size;
-        SDL_QueryTexture(texture, NULL, NULL, &currentFrame.w, &currentFrame.h);
-    };
+        SDL_QueryTexture(texture_, NULL, NULL, &current_frame_.w,
+                         &current_frame_.h);
+    }
 
    public:
-    Object(Vector2f p_position, SDL_Texture* p_texture);
+    Object(Vector2f position, SDL_Texture* texture);
     ~Object();
 
-    Vector2f getPosition();
+    Vector2f get_position() const { return position_; }
+    void set_position(Vector2f position) {position_ = position; }
     float getX();
     float getY();
-    void setPosition(Vector2f p_position);
-    void setX(float p_x);
-    void setY(float p_y);
+    void setX(float x);
+    void setY(float y);
 
     int getWidth();
     int getHeight();
 
-    SDL_Texture* getTexture();
-    void setTexture(SDL_Texture* p_texture);
+    SDL_Texture* get_texture() const { return texture_; }
+    void set_texture(SDL_Texture* texture) { texture_ = texture; }
 
-    SDL_Rect getCurrentFrame();
+    SDL_Rect get_current_frame() const { return current_frame_; }
 };

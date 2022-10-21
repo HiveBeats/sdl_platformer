@@ -6,15 +6,15 @@
 
 class Window {
    public:
-    Window(const char* p_title, int p_w, int p_h);
-    void query_size(int* w, int* h);
-    SDL_Texture* load_texture(const char* p_filePath);
-    void cleanup();
-    void clear();
-    void render(Object* p_object);
-    void display();
+    Window(const char* title, int w, int h);
+    void QuerySize(int* w, int* h);
+    SDL_Texture* LoadTexture(const char* filePath);
+    void Cleanup();
+    void Clear();
+    void Render(Object* object);
+    void Display();
 
    private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
+    SDL_Window* window_;
+    SDL_Renderer* renderer_;
 };

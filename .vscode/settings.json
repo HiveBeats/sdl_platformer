@@ -1,4 +1,10 @@
 {
     "clang-format.language.cpp.style": "file",
-    "clang-format.assumeFilename": ".clang-format"
+    "clang-format.assumeFilename": ".clang-format",
+    "files.associations": {
+        "__node_handle": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp"
+    }
 }

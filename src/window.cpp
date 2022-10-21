@@ -12,23 +12,23 @@ void fill_rect(SDL_Rect* rect, int x, int y, int h, int w) {
     rect->w = w;
 }
 
-Window::Window(const char* p_title, int p_w, int p_h)
-    : window(NULL), renderer(NULL) {
-    window =
-        SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED,
-                         SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN);
+Window::Window(const char* title, int w, int h)
+    : window_(NULL), renderer_(NULL) {
+    window_ =
+        SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
+                         SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
 
-    if (window == NULL) {
+    if (window_ == NULL) {
         std::cout << "Window failed to init. Error: " << SDL_GetError()
                   << std::endl;
     }
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
 }
 
-SDL_Texture* Window::load_texture(const char* p_filePath) {
+SDL_Texture* Window::LoadTexture(const char* filePath) {
     SDL_Texture* texture = NULL;
-    texture = IMG_LoadTexture(renderer, p_filePath);
+    texture = IMG_LoadTexture(renderer_, filePath);
 
     if (texture == NULL)
         std::cout << "Failed to load texture. Error: " << SDL_GetError()
@@ -37,32 +37,32 @@ SDL_Texture* Window::load_texture(const char* p_filePath) {
     return texture;
 }
 
-void Window::query_size(int* w, int* h) {
-    SDL_GetRendererOutputSize(renderer, w, h);
+void Window::QuerySize(int* w, int* h) {
+    SDL_GetRendererOutputSize(renderer_, w, h);
 }
 
-void Window::cleanup() {
-    SDL_DestroyWindow(window);
+void Window::Cleanup() {
+    SDL_DestroyWindow(window_);
 }
 
-void Window::clear() {
-    SDL_RenderClear(renderer);
+void Window::Clear() {
+    SDL_RenderClear(renderer_);
 }
 
-void Window::render(Object* p_object) {
-    SDL_Rect currentFrame = p_object->getCurrentFrame();
+void Window::Render(Object* object) {
+    SDL_Rect currentFrame = object->get_current_frame();
 
     SDL_Rect src;
     fill_rect(&src, currentFrame.x, currentFrame.y, currentFrame.h,
               currentFrame.w);
 
     SDL_Rect dst;
-    fill_rect(&dst, p_object->getX() * 4, p_object->getY() * 4,
+    fill_rect(&dst, object->getX() * 4, object->getY() * 4,
               currentFrame.h * 4, currentFrame.w * 4);
 
-    SDL_RenderCopy(renderer, p_object->getTexture(), &src, &dst);
+    SDL_RenderCopy(renderer_, object->get_texture(), &src, &dst);
 }
 
-void Window::display() {
-    SDL_RenderPresent(renderer);
+void Window::Display() {
+    SDL_RenderPresent(renderer_);
 }

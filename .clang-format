@@ -1,6 +1,7 @@
 # Google C/C++ Code Style settings
 # https://clang.llvm.org/docs/ClangFormatStyleOptions.html
 # Author: Kehan Xue, kehan.xue (at) gmail.com
+## naming convention used: https://guiquanz.gitbooks.io/google-cc-style-guide/content/ebook/Naming.html
 
 Language: Cpp
 BasedOnStyle: Google

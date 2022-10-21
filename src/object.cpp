@@ -2,9 +2,9 @@
 #include <SDL2/SDL_image.h>
 #include "object.h"
 
-Object::Object(Vector2f p_position, SDL_Texture* p_texture)
-    : position(p_position), texture(p_texture) {
-    setDefaultFrame();
+Object::Object(Vector2f position, SDL_Texture* texture)
+    : position_(position), texture_(texture) {
+    LoadDefaultFrame();
 }
 /*
 void Object::setDefaultFrame() {
@@ -16,45 +16,30 @@ void Object::setDefaultFrame() {
 */
 
 Object::~Object() {
-    SDL_DestroyTexture(texture);
+    SDL_DestroyTexture(texture_);
 }
 
-Vector2f Object::getPosition() {
-    return position;
-}
 
 float Object::getX() {
-    return position.x;
+    return position_.x;
 }
 
 float Object::getY() {
-    return position.y;
-}
-
-void Object::setPosition(Vector2f p_position) {
-    position = p_position;
+    return position_.y;
 }
 
 void Object::setX(float p_x) {
-    position.x = p_x;
+    position_.x = p_x;
 }
 
 void Object::setY(float p_y) {
-    position.y = p_y;
+    position_.y = p_y;
 }
 
 int Object::getWidth() {
-    return currentFrame.w;
+    return current_frame_.w;
 }
 
 int Object::getHeight() {
-    return currentFrame.h;
-}
-
-SDL_Texture* Object::getTexture() {
-    return texture;
-}
-
-SDL_Rect Object::getCurrentFrame() {
-    return currentFrame;
+    return current_frame_.h;
 }

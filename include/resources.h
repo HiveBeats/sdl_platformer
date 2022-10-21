@@ -5,12 +5,12 @@
 
 class Resources {
    private:
-    Window* window;
-    SDL_Texture* grassTexture;
-    SDL_Texture* characterTexture;
+    Window* window_;
+    SDL_Texture* grass_texture_;
+    SDL_Texture* character_texture_;
 
    public:
-    Resources(Window* window);
-    SDL_Texture* getGrassTexture();
-    SDL_Texture* getCharacterTexture();
+    explicit Resources(Window* window);
+    SDL_Texture* getGrassTexture() const { return grass_texture_; }
+    SDL_Texture* getCharacterTexture() const { return character_texture_; }
 };

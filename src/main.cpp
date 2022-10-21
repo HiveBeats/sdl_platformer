@@ -13,8 +13,8 @@
 #include "resources.h"
 #include "window.h"
 
-#define WINDOW_X 1280
-#define WINDOW_Y 720
+#define WINDOW_X 640
+#define WINDOW_Y 480
 
 int w_width, w_height;
 
@@ -34,9 +34,8 @@ void init_entities(std::vector<std::shared_ptr<Object>>* list) {
     int w, h;
     SDL_QueryTexture(grass_texture, NULL, NULL, &w, &h);
 
-    // x4 because on render it's transformed to x4
-    int count = floor(static_cast<double>(w_width) / (w * 4));
-    int ground_offset = h * 4 + (h / 2) + (h / 4);
+    int count = floor(static_cast<double>(w_width) / (w));
+    int ground_offset = w_height - (h);
 
     for (int i = 0; i < count; i++) {
         Vector2f grass_position = Vector2f(i * w, ground_offset);
@@ -106,7 +105,7 @@ int main(int argc, char* args[]) {
         if (direction == Direction::Left && player->getX() > 0) {
             player->setX(player->getX() - 1);
         } else if (direction == Direction::Right &&
-                   player->getX() < w_width - (16 * player->getWidth())) {
+                   player->getX() < (w_width - player->getWidth())) {
             player->setX(player->getX() + 1);
         } else if (direction == Direction::Stale) {
         }

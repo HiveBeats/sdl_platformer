@@ -56,8 +56,8 @@ void Window::Render(Object* object) {
               current_frame.w);
 
     SDL_Rect dst;
-    fill_rect(&dst, object->getX() * 4, object->getY() * 4, current_frame.h * 4,
-              current_frame.w * 4);
+    fill_rect(&dst, object->getX(), object->getY(), current_frame.h,
+              current_frame.w);
 
     SDL_RenderCopy(renderer_, object->get_texture(), &src, &dst);
 }

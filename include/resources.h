@@ -8,6 +8,7 @@ class Resources {
     Window* window_;
     SDL_Texture* grass_texture_;
     SDL_Texture* character_texture_;
+    SDL_Texture* enemy_texture_;
     Resources() {}
 
    public:
@@ -19,6 +20,8 @@ class Resources {
                 window->LoadTexture("res/gfx/ground_grass_1.png");
             INSTANCE.character_texture_ =
                 window->LoadTexture("res/gfx/hulking_knight.png");
+            INSTANCE.enemy_texture_ =
+                window->LoadTexture("res/gfx/AnimationSheet_Character.png");
         }
 
         return INSTANCE;
@@ -29,4 +32,5 @@ class Resources {
 
     SDL_Texture* get_grass_texture() const { return grass_texture_; }
     SDL_Texture* get_character_texture() const { return character_texture_; }
+    SDL_Texture* get_enemy_texture() const { return enemy_texture_; }
 };

@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+#include "enemy.h"
 #include "object.h"
 #include "player.h"
 
@@ -14,6 +15,7 @@ extern int g_height;
 class LevelManager {
    private:
     std::shared_ptr<Player> player_;
+    std::shared_ptr<Enemy> enemy_;
     std::vector<std::shared_ptr<Object>>* objects_;
 
    public:

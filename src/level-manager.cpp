@@ -22,6 +22,10 @@ LevelManager::LevelManager() {
     Vector2f player_position = Vector2f(2 * w, ground_offset - (h + (h / 4)));
     player_ = CreateObject<Player>(player_position, NULL);
     objects_->push_back(player_);
+
+    Vector2f enemy_position = Vector2f(4 * w, ground_offset - (h));
+    enemy_ = CreateObject<Enemy>(enemy_position, NULL);
+    objects_->push_back(enemy_);
 }
 
 LevelManager::~LevelManager() {
@@ -30,4 +34,5 @@ LevelManager::~LevelManager() {
 
 void LevelManager::Update(SDL_Event* e) {
     player_.get()->Update(e);
+    enemy_.get()->Update(e);
 }

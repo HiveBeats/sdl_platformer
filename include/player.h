@@ -9,6 +9,7 @@
 class Player : public Character {
    private:
     int animation_counter_ = 0;
+    bool stale_ = true;
     void MoveInDirection();
     void ChooseDirectionFromEvent(SDL_Event* e);
 
@@ -20,5 +21,5 @@ class Player : public Character {
     Player(Vector2f p_position, SDL_Texture* p_texture)
         : Character(p_position, Resources::Instance().get_character_texture()) {
     }
-    void Update(SDL_Event* e) override;
+    void Update(SDL_Event* e, int force = 10) override;
 };

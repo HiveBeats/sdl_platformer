@@ -23,5 +23,5 @@ class Enemy : public Character {
         : Character(p_position, Resources::Instance().get_enemy_texture()) {
         direction_ = Direction::Right;
     }
-    void Update(SDL_Event* e) override;
+    void Update(SDL_Event* e, int force = 10) override;
 };

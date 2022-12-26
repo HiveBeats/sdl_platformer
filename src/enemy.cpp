@@ -34,7 +34,7 @@ void Enemy::Animate() {
         current_frame_.y = 0;
 }
 
-void Enemy::Update(SDL_Event* e) {
+void Enemy::Update(SDL_Event* e, int force = 10) {
     ChooseDirectionFromPosition();
     MoveInDirection();
 

@@ -63,23 +63,34 @@ void Player::MoveInDirection(int force) {
     }
 }
 
-void Player::Update(SDL_Event* e) {
+void Player::Update(SDL_Event* e, int force = 10) {
     int mouse_x, mouse_y;
     SDL_GetMouseState(&mouse_x, &mouse_y);
 
-    // Determine the direction based on the mouse position
-    if (mouse_x < getX()) {
-        direction_ = Direction::Left;
-    } else if (mouse_x > getX() + getWidth()) {
-        direction_ = Direction::Right;
-    } else {
-        direction_ = Direction::Stale;
+    // Check for mouse click events
+    if (e->type == SDL_MOUSEBUTTONDOWN) {
+        // Determine the direction based on the mouse position
+        if (mouse_x < getX()) {
+            direction_ = Direction::Left;
+        } else if (mouse_x > getX() + getWidth()) {
+            direction_ = Direction::Right;
+        } else {
+            direction_ = Direction::Stale;
+        }
+        // Set the player to not be in the stale state
+        stale_ = false;
+    } else if (e->type == SDL_MOUSEBUTTONUP) {
+        // Set the player to be in the stale state
+        stale_ = true;
     }
 
     // Decrease the force by a small amount each frame to simulate friction
     force = std::max(force - 1, 0);
 
-    MoveInDirection(10);//todo: as input parameter to Update function
+    // Only move the player if it is not in the stale state or if the force is non-zero
+    if (!stale_ || force > 0) {
+        MoveInDirection(force);
+    }
 
     if (++animation_counter_ == 10) {
         Animate();

@@ -52,9 +52,19 @@ void Player::MoveInDirection() {
     }
 }
 
-// todo: replace SDL_event with anything custom like PLAYER_ACTION or whatever
 void Player::Update(SDL_Event* e) {
-    ChooseDirectionFromEvent(e);
+    int mouse_x, mouse_y;
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+
+    // Determine the direction based on the mouse position
+    if (mouse_x < getX()) {
+        direction_ = Direction::Left;
+    } else if (mouse_x > getX() + getWidth()) {
+        direction_ = Direction::Right;
+    } else {
+        direction_ = Direction::Stale;
+    }
+    //ChooseDirectionFromEvent(e);
     MoveInDirection();
 
     if (++animation_counter_ == 10) {

@@ -43,12 +43,23 @@ void Player::ChooseDirectionFromEvent(SDL_Event* e) {
 }
 
 void Player::MoveInDirection(int force) {
-    if (direction_ == Direction::Left && getX() > 0) {
-        setX(getX() - force);
-    } else if (direction_ == Direction::Right &&
-               getX() < (g_width - getWidth())) {
-        setX(getX() + force);
-    } else if (direction_ == Direction::Stale) {
+    int new_x = getX();
+    if (direction_ == Direction::Left) {
+        new_x -= force;
+    } else if (direction_ == Direction::Right) {
+        new_x += force;
+    }
+
+    // Check if the player is outside the screen boundaries
+    if (new_x < 0 || new_x > (g_width - getWidth())) {
+        // Change the direction to the opposite direction
+        if (direction_ == Direction::Left) {
+            direction_ = Direction::Right;
+        } else {
+            direction_ = Direction::Left;
+        }
+    } else {
+        setX(new_x);
     }
 }
 

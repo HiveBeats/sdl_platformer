@@ -15,7 +15,7 @@ void Enemy::ChooseDirectionFromPosition() {
     }
 }
 
-void Enemy::MoveInDirection() {
+void Enemy::MoveInDirection(int force) {
     if (direction_ == Direction::Left && getX() > 0) {
         setX(getX() - 1);
     } else if (direction_ == Direction::Right &&
@@ -34,7 +34,7 @@ void Enemy::Animate() {
         current_frame_.y = 0;
 }
 
-void Enemy::Update(SDL_Event* e, int force = 10) {
+void Enemy::Update(SDL_Event* e, int force) {
     ChooseDirectionFromPosition();
     MoveInDirection();
 

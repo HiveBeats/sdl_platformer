@@ -14,7 +14,7 @@ class Enemy : public Character {
 
    protected:
     void ChooseDirectionFromPosition();
-    void MoveInDirection();
+    void MoveInDirection(int force = 10);
     void LoadDefaultFrame() override;
     void Animate() override;
 

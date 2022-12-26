@@ -10,7 +10,7 @@ class Player : public Character {
    private:
     int animation_counter_ = 0;
     bool stale_ = true;
-    void MoveInDirection();
+    void MoveInDirection(int force);
     void ChooseDirectionFromEvent(SDL_Event* e);
 
    protected:

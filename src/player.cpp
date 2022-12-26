@@ -63,7 +63,7 @@ void Player::MoveInDirection(int force) {
     }
 }
 
-void Player::Update(SDL_Event* e, int force = 10) {
+void Player::Update(SDL_Event* e, int force) {
     int mouse_x, mouse_y;
     SDL_GetMouseState(&mouse_x, &mouse_y);
 

@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <cmath>
 #include "player.h"
 
 extern int g_width;
@@ -47,9 +48,8 @@ void Player::MoveInDirection(int force_x, int force_y) {
     int new_y = getY() + force_y;
 
     // Check if the player is outside the screen boundaries
-    if (new_x < 0 || new_x > (g_width - getWidth()) ||
-        new_y < 0 || new_y > (g_height - getHeight())) {
-        // Change the direction to the opposite direction
+    if (new_x < 0 || new_x > (g_width - getWidth())) {
+        // Change the x direction to the opposite direction
         if (direction_ == Direction::Left) {
             direction_ = Direction::Right;
         } else {
@@ -57,6 +57,16 @@ void Player::MoveInDirection(int force_x, int force_y) {
         }
     } else {
         setX(new_x);
+    }
+
+    if (new_y < 0 || new_y > (g_height - getHeight())) {
+        // Change the y direction to the opposite direction
+        if (direction_ == Direction::Up) {
+            direction_ = Direction::Down;
+        } else {
+            direction_ = Direction::Up;
+        }
+    } else {
         setY(new_y);
     }
 }
@@ -70,9 +80,9 @@ void Player::Update(SDL_Event* e, int force) {
     int force_y = mouse_y - getY();
 
     // Normalize the force vector
-    int length = std::sqrt(force_x * force_x + force_y * force_y);
-    force_x = force_x * force / length;
-    force_y = force_y * force / length;
+    // int length = std::sqrt(force_x * force_x + force_y * force_y);
+    // force_x = force_x * force / length;
+    // force_y = force_y * force / length;
 
     // Check for mouse click events
     if (e->type == SDL_MOUSEBUTTONDOWN) {
@@ -96,7 +106,7 @@ void Player::Update(SDL_Event* e, int force) {
     force_y = std::max(force_y - 1, 0);
 
     // Only move the player if it is not in the stale state or if the force is non-zero
-    if (!stale_ || force_x > 0 && force_y > 0) {
+    if (!stale_ || (force_x > 0 && force_y > 0)) {
         MoveInDirection(force_x, force_y);
     }
 

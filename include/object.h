@@ -3,6 +3,8 @@
 #include <SDL2/SDL_image.h>
 
 #include <vector2.h>
+#include <vector>
+#include "observer.h"
 
 class Object {
    protected:
@@ -10,6 +12,7 @@ class Object {
     SDL_Rect current_frame_;
     SDL_Texture* texture_;
     virtual void LoadDefaultFrame();
+    std::vector<Observer*> observers_;
 
    public:
     Object(Vector2f position, SDL_Texture* texture)
@@ -22,6 +25,9 @@ class Object {
     float getY();
     void setX(float x);
     void setY(float y);
+    void addObserver(Observer* observer);
+    void removeObserver(Observer* observer);
+    void notify(Event event);
 
     int getWidth();
     int getHeight();

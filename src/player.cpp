@@ -42,12 +42,12 @@ void Player::ChooseDirectionFromEvent(SDL_Event* e) {
     }
 }
 
-void Player::MoveInDirection() {
+void Player::MoveInDirection(int force) {
     if (direction_ == Direction::Left && getX() > 0) {
-        setX(getX() - 1);
+        setX(getX() - force);
     } else if (direction_ == Direction::Right &&
                getX() < (g_width - getWidth())) {
-        setX(getX() + 1);
+        setX(getX() + force);
     } else if (direction_ == Direction::Stale) {
     }
 }
@@ -64,8 +64,8 @@ void Player::Update(SDL_Event* e) {
     } else {
         direction_ = Direction::Stale;
     }
-    //ChooseDirectionFromEvent(e);
-    MoveInDirection();
+
+    MoveInDirection(10);//todo: as input parameter to Update function
 
     if (++animation_counter_ == 10) {
         Animate();

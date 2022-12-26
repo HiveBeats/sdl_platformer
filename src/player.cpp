@@ -76,6 +76,9 @@ void Player::Update(SDL_Event* e) {
         direction_ = Direction::Stale;
     }
 
+    // Decrease the force by a small amount each frame to simulate friction
+    force = std::max(force - 1, 0);
+
     MoveInDirection(10);//todo: as input parameter to Update function
 
     if (++animation_counter_ == 10) {

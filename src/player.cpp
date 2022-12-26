@@ -42,16 +42,13 @@ void Player::ChooseDirectionFromEvent(SDL_Event* e) {
     }
 }
 
-void Player::MoveInDirection(int force) {
-    int new_x = getX();
-    if (direction_ == Direction::Left) {
-        new_x -= force;
-    } else if (direction_ == Direction::Right) {
-        new_x += force;
-    }
+void Player::MoveInDirection(int force_x, int force_y) {
+    int new_x = getX() + force_x;
+    int new_y = getY() + force_y;
 
     // Check if the player is outside the screen boundaries
-    if (new_x < 0 || new_x > (g_width - getWidth())) {
+    if (new_x < 0 || new_x > (g_width - getWidth()) ||
+        new_y < 0 || new_y > (g_height - getHeight())) {
         // Change the direction to the opposite direction
         if (direction_ == Direction::Left) {
             direction_ = Direction::Right;
@@ -60,6 +57,7 @@ void Player::MoveInDirection(int force) {
         }
     } else {
         setX(new_x);
+        setY(new_y);
     }
 }
 
@@ -67,12 +65,21 @@ void Player::Update(SDL_Event* e, int force) {
     int mouse_x, mouse_y;
     SDL_GetMouseState(&mouse_x, &mouse_y);
 
+    // Determine the x and y components of the force based on the mouse position
+    int force_x = mouse_x - getX();
+    int force_y = mouse_y - getY();
+
+    // Normalize the force vector
+    int length = std::sqrt(force_x * force_x + force_y * force_y);
+    force_x = force_x * force / length;
+    force_y = force_y * force / length;
+
     // Check for mouse click events
     if (e->type == SDL_MOUSEBUTTONDOWN) {
         // Determine the direction based on the mouse position
-        if (mouse_x < getX()) {
+        if (force_x < 0) {
             direction_ = Direction::Left;
-        } else if (mouse_x > getX() + getWidth()) {
+        } else if (force_x > 0) {
             direction_ = Direction::Right;
         } else {
             direction_ = Direction::Stale;
@@ -85,11 +92,12 @@ void Player::Update(SDL_Event* e, int force) {
     }
 
     // Decrease the force by a small amount each frame to simulate friction
-    force = std::max(force - 1, 0);
+    force_x = std::max(force_x - 1, 0);
+    force_y = std::max(force_y - 1, 0);
 
     // Only move the player if it is not in the stale state or if the force is non-zero
-    if (!stale_ || force > 0) {
-        MoveInDirection(force);
+    if (!stale_ || force_x > 0 && force_y > 0) {
+        MoveInDirection(force_x, force_y);
     }
 
     if (++animation_counter_ == 10) {

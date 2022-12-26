@@ -2,7 +2,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <vector>
-#include "object.h"
 
 enum class Event {
     SUBJECT_MOVED,
@@ -10,7 +9,7 @@ enum class Event {
     SUBJECT_HOLE_COLLIDED
 };
 
-class Object;
+class Object; // Forward declare Object class
 
 class Observer {
    protected:
@@ -19,7 +18,7 @@ class Observer {
    public:
     Observer();
     virtual ~Observer() noexcept;
-    virtual void onNotify(const Object& entity, Event event) = 0;
-    void registerSub(Object* s);
-    void unregisterSub(Object* s);
+    virtual void OnNotify(const Object& entity, Event event) = 0;
+    void RegisterSub(Object* s);
+    void UnregisterSub(Object* s);
 };

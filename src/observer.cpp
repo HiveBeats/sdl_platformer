@@ -9,7 +9,7 @@ Observer::~Observer() noexcept {
         sub->removeObserver(this);
 }
 
-void Observer::registerSub(Object* s) {
+void Observer::RegisterSub(Object* s) {
     bool found = std::find(std::begin(observed_), std::end(observed_), s) !=
                  std::end(observed_);
 
@@ -18,7 +18,7 @@ void Observer::registerSub(Object* s) {
     }
 }
 
-void Observer::unregisterSub(Object* s) {
+void Observer::UnregisterSub(Object* s) {
     auto it = std::find(std::begin(observed_), std::end(observed_), s);
 
     if (it != std::end(observed_)) {

@@ -25,9 +25,9 @@ class Object {
     float getY();
     void setX(float x);
     void setY(float y);
-    void addObserver(Observer* observer);
-    void removeObserver(Observer* observer);
-    void notify(Event event);
+    void AddObserver(Observer* observer);
+    void RemoveObserver(Observer* observer);
+    void Notify(Event event);
 
     int getWidth();
     int getHeight();

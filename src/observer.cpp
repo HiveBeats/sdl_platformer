@@ -6,7 +6,7 @@ Observer::Observer() : observed_{} {}
 
 Observer::~Observer() noexcept {
     for (Object* sub : observed_)
-        sub->removeObserver(this);
+        sub->RemoveObserver(this);
 }
 
 void Observer::RegisterSub(Object* s) {

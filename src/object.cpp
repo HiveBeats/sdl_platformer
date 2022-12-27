@@ -1,8 +1,7 @@
-#include <algorithm>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <algorithm>
 #include "object.h"
-
 
 void Object::LoadDefaultFrame() {
     current_frame_.x = 0;
@@ -18,7 +17,7 @@ void Object::Init() {
 
 Object::~Object() {
     SDL_DestroyTexture(texture_);
-    for (Observer* ob: observers_)
+    for (Observer* ob : observers_)
         ob->UnregisterSub(this);
 }
 
@@ -46,33 +45,28 @@ int Object::getHeight() {
     return current_frame_.h;
 }
 
-void Subject::AddObserver(Observer* observer)
-{
-    if (observer != nullptr)
-    {
-        bool found = std::find(std::begin(observers_), std::end(observers_), observer) != std::end(observers_);
+void Object::AddObserver(Observer* observer) {
+    if (observer != nullptr) {
+        bool found = std::find(std::begin(observers_), std::end(observers_),
+                               observer) != std::end(observers_);
 
-        if (!found)
-        {
+        if (!found) {
             observers_.push_back(observer);
             observer->RegisterSub(this);
         }
     }
 }
 
-void Subject::RemoveObserver(Observer* observer)
-{
+void Object::RemoveObserver(Observer* observer) {
     auto it = std::find(std::begin(observers_), std::end(observers_), observer);
 
-    if (it != std::end(observers_))
-    {
+    if (it != std::end(observers_)) {
         observers_.erase(it);
         observer->UnregisterSub(this);
     }
 }
 
-void Subject::Notify(Event event)
-{
-    for (Observer* ob: observers_)
+void Object::Notify(Event event) {
+    for (Observer* ob : observers_)
         ob->OnNotify(*this, event);
 }

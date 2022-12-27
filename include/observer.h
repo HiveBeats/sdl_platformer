@@ -9,7 +9,7 @@ enum class Event {
     SUBJECT_HOLE_COLLIDED
 };
 
-class Object; // Forward declare Object class
+class Object;  // Forward declare Object class
 
 class Observer {
    protected:
